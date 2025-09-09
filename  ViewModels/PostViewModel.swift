@@ -5,7 +5,9 @@ class PostViewModel: ObservableObject {
     @Published var posts: [Post] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
-    @Published var currentUser: User?
+    @Published var currentUser: AuthenticatedUser?
+
+
 
     private let postService = PostService()
     private let authManager: AuthManager
@@ -33,15 +35,17 @@ class PostViewModel: ObservableObject {
 
         do {
             let newPost = try await postService.createPost(title: title, body: body, userId: userId)
-            self.posts.insert(newPost, at: 0) // Insert new post at the top
+            self.posts.insert(newPost, at: 0)
         } catch {
             self.errorMessage = "Failed to create post: \(error.localizedDescription)"
         }
     }
 
     func fetchCurrentUser() {
-        self.currentUser = authManager.currentUser // ✅ No parentheses
+        self.currentUser = authManager.currentUser  
     }
+    
+    
 }
 
  

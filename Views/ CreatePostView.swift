@@ -11,7 +11,7 @@ struct CreatePostView: View {
         VStack(spacing: 20) {
             if let user = postViewModel.currentUser {
                 HStack {
-                    AsyncImage(url: URL(string: user.image)) { phase in
+                    AsyncImage(url: URL(string: user.image ?? "")) { phase in
                         if let image = phase.image {
                             image.resizable()
                                 .aspectRatio(contentMode: .fit)
@@ -25,9 +25,9 @@ struct CreatePostView: View {
                         }
                     }
                     VStack(alignment: .leading) {
-                        Text("\(user.firstName) \(user.lastName)")
+                        Text("\((user.firstName ?? "") + " " + (user.lastName ?? ""))")
                             .font(.headline)
-                        Text(user.email)
+                        Text(user.email ?? "No email")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -66,7 +66,6 @@ struct CreatePostView: View {
         .padding()
         .navigationTitle("Create New Post")
         .navigationBarTitleDisplayMode(.inline)
-      
         .task {
             postViewModel.fetchCurrentUser()
         }

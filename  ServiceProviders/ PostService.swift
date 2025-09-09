@@ -43,16 +43,14 @@ final class PostService {
             throw URLError(.badServerResponse)
         }
 
-        // try decode Post — dummyjson returns created post; fallback to constructing one if decode fails
-        if let createdPost = try? JSONDecoder().decode(Post.self, from: data) {
+         if let createdPost = try? JSONDecoder().decode(Post.self, from: data) {
             var postWithImage = createdPost
             if postWithImage.image == nil {
                 postWithImage.image = "https://picsum.photos/600/400?random=\(postWithImage.id)"
             }
             return postWithImage
         } else {
-            // fallback: create local Post object so UI shows it immediately
-            let fallbackId = Int(Date().timeIntervalSince1970)
+             let fallbackId = Int(Date().timeIntervalSince1970)
             let fallbackPost = Post(
                 id: fallbackId,
                 title: title,

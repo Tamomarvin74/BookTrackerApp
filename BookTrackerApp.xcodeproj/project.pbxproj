@@ -20,7 +20,6 @@
 		CE924E112E68578D0019273D /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE924E102E68578D0019273D /* PostDetailView.swift */; };
 		CE9D435D2E66D56F003E503C /*  AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9D435C2E66D56F003E503C /*  AuthManager.swift */; };
 		CE9D435F2E66D593003E503C /*  LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9D435E2E66D593003E503C /*  LoginView.swift */; };
-		CEA644792E6F278B000A7CFF /*  AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA644782E6F278B000A7CFF /*  AuthService.swift */; };
 		CEA6447B2E6F2B97000A7CFF /*  ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA6447A2E6F2B97000A7CFF /*  ProfileViewModel.swift */; };
 		CEF862352E6AF1950057B51F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF862342E6AF1950057B51F /* ProfileView.swift */; };
 /* End PBXBuildFile section */
@@ -59,7 +58,6 @@
 		CE9D43402E66D35A003E503C /* BookTrackerAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BookTrackerAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9D435C2E66D56F003E503C /*  AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " AuthManager.swift"; sourceTree = "<group>"; };
 		CE9D435E2E66D593003E503C /*  LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " LoginView.swift"; sourceTree = "<group>"; };
-		CEA644782E6F278B000A7CFF /*  AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " AuthService.swift"; sourceTree = "<group>"; };
 		CEA6447A2E6F2B97000A7CFF /*  ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " ProfileViewModel.swift"; sourceTree = "<group>"; };
 		CEF862342E6AF1950057B51F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -112,7 +110,6 @@
 			children = (
 				CE545FBA2E699B1A00E05E7E /*  PostService.swift */,
 				CE538E242E6EEE0C00B9437B /* UserService.swift */,
-				CEA644782E6F278B000A7CFF /*  AuthService.swift */,
 			);
 			path = " ServiceProviders";
 			sourceTree = "<group>";
@@ -321,7 +318,6 @@
 			files = (
 				CE545FBF2E69E5E500E05E7E /* PostViewModel.swift in Sources */,
 				CE538E252E6EEE0C00B9437B /* UserService.swift in Sources */,
-				CEA644792E6F278B000A7CFF /*  AuthService.swift in Sources */,
 				CE538E1F2E6EEB4400B9437B /*  ContentView.swift .swift in Sources */,
 				CE9D435D2E66D56F003E503C /*  AuthManager.swift in Sources */,
 				CEA6447B2E6F2B97000A7CFF /*  ProfileViewModel.swift in Sources */,

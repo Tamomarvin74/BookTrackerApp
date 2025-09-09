@@ -1,13 +1,11 @@
-import SwiftUI
+    import SwiftUI
 
-@main
-struct BookTrackerApp: App {
-    @StateObject private var authManager = AuthManager()
+    struct ContentView: View {
+        @StateObject private var authManager = AuthManager()
 
-    var body: some Scene {
-        WindowGroup {
+        var body: some View {
             if authManager.isAuthenticated {
-                ContentView() 
+                PostListView(postViewModel: PostViewModel(authManager: authManager))
                     .environmentObject(authManager)
             } else {
                 LoginView()
@@ -15,5 +13,4 @@ struct BookTrackerApp: App {
             }
         }
     }
-}
 

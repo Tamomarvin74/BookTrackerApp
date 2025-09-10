@@ -44,7 +44,7 @@ struct UserService {
     }
 
     func fetchUser(by id: Int) async throws -> User {
-        let url = URL(string: "https://dummyjson.com/users/\(id)")!
+            let url = URL(string: "https://dummyjson.com/users/\(id)")!
         let (data, _) = try await session.data(from: url)
         return try JSONDecoder().decode(User.self, from: data)
     }

@@ -1,4 +1,5 @@
 import SwiftUI
+import FirebaseAuth
 
 struct PostListView: View {
     @EnvironmentObject var authManager: AuthManager
@@ -17,7 +18,7 @@ struct PostListView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Sign Out") {
-                        authManager.signOut()
+                        authManager.logout()
                     }
                 }
 
@@ -28,7 +29,9 @@ struct PostListView: View {
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: ProfileView(userId: authManager.currentUser?.id ?? 1)) {
+                    NavigationLink(
+                        destination: ProfileView(userId: postViewModel.currentUser?.id ?? 1)
+                    ) {
                         Image(systemName: "person.crop.circle.fill")
                     }
                 }
@@ -36,7 +39,7 @@ struct PostListView: View {
         }
         .task {
             await postViewModel.fetchPosts()
-            postViewModel.fetchCurrentUser()
+            await postViewModel.fetchCurrentUser()
         }
     }
 
@@ -51,7 +54,7 @@ struct PostListView: View {
             ScrollView {
                 LazyVStack(spacing: 15) {
                     ForEach(postViewModel.posts) { post in
-                        NavigationLink(destination: PostDetailView(post: post)) {
+                         NavigationLink(destination: PostDetailView(post: post)) {
                             PostRowView(post: post)
                         }
                         .buttonStyle(PlainButtonStyle())
@@ -68,7 +71,8 @@ struct PostListView: View {
 
         var body: some View {
             VStack(alignment: .leading, spacing: 10) {
-                if let imageUrl = post.image, let url = URL(string: imageUrl) {
+                let imageUrl = post.image ?? randomImageURL()
+                if let url = URL(string: imageUrl) {
                     AsyncImage(url: url) { phase in
                         if let image = phase.image {
                             image
@@ -126,6 +130,11 @@ struct PostListView: View {
             )
             .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
             .padding(.horizontal, 15)
+        }
+
+        private func randomImageURL() -> String {
+            let randomId = Int.random(in: 1...1000)
+            return "https://picsum.photos/id/\(randomId)/400/200"
         }
     }
 }

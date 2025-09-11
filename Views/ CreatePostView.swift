@@ -13,7 +13,8 @@ struct CreatePostView: View {
                 HStack {
                     AsyncImage(url: URL(string: user.image ?? "")) { phase in
                         if let image = phase.image {
-                            image.resizable()
+                            image
+                                .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 50, height: 50)
                                 .clipShape(Circle())
@@ -48,15 +49,25 @@ struct CreatePostView: View {
                 .cornerRadius(10)
 
             Button("Publish Post") {
-                Task {
-                    await postViewModel.createPost(title: postTitle, body: postBody)
-                    dismiss()
-                }
+                 let newId = (postViewModel.posts.first?.id ?? 0) + 1
+                let newPost = Post(
+                    id: newId,
+                    title: postTitle,
+                    body: postBody,
+                    userId: 1, 
+                    tags: [],
+                    reactions: Reactions(likes: 0, dislikes: 0),
+                    views: 0,
+                    image: "https://picsum.photos/600/400?random=\(newId)"
+                )
+
+                postViewModel.posts.insert(newPost, at: 0)
+                dismiss()
             }
             .font(.headline)
             .padding()
             .frame(maxWidth: .infinity)
-            .background(Color.blue)
+            .background(postTitle.isEmpty || postBody.isEmpty ? Color.gray : Color.blue)
             .foregroundColor(.white)
             .cornerRadius(10)
             .disabled(postTitle.isEmpty || postBody.isEmpty)
@@ -66,9 +77,6 @@ struct CreatePostView: View {
         .padding()
         .navigationTitle("Create New Post")
         .navigationBarTitleDisplayMode(.inline)
-        .task {
-            postViewModel.fetchCurrentUser()
-        }
     }
 }
 

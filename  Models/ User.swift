@@ -1,6 +1,6 @@
 import Foundation
 
- struct LoginCredentials: Codable {
+struct LoginCredentials: Codable {
     let username: String
     let password: String
     let expiresInMins: Int?
@@ -16,7 +16,7 @@ struct LoginResponse: Codable {
     let image: String
     let accessToken: String
     let refreshToken: String
-    
+
     enum CodingKeys: String, CodingKey {
         case id, username, email, firstName, lastName, gender, image
         case accessToken = "token"
@@ -24,39 +24,47 @@ struct LoginResponse: Codable {
     }
 }
 
- struct User: Identifiable, Codable {
+struct AppUser: Identifiable, Codable {
     let id: Int
-    let firstName, lastName: String
+    let firstName: String?
+    let lastName: String?
     let maidenName: String?
-    let age: Int
-    let gender: String
-    let email, phone, username: String
-    let birthDate: String
-    let image: String
+    let age: Int?
+    let gender: String?
+    let email: String?
+    let phone: String?
+    let username: String?
+    let birthDate: String?
+    let image: String?
     let bloodGroup: String?
-    let height, weight: Double
+    let height: Double?
+    let weight: Double?
     let eyeColor: String?
     let hair: Hair?
-    let ip, macAddress, university: String?
-    let address: Address
+    let ip: String?
+    let macAddress: String?
+    let university: String?
+    let address: Address?
     let bank: Bank?
     let company: Company?
-    let ein, ssn: String?
+    let ein: String?
+    let ssn: String?
     let userAgent: String?
     let crypto: Crypto?
     let role: String?
-    
+
     var accessToken: String?
     var refreshToken: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case id, firstName, lastName, maidenName, age, gender, email, phone, username, birthDate, image, bloodGroup, height, weight, eyeColor, hair, ip, macAddress, university, address, bank, company, ein, ssn, userAgent, crypto, role, refreshToken
         case accessToken = "token"
     }
 }
 
+
  struct UserList: Codable {
-    let users: [User]
+    let users: [AppUser]
 }
 
 struct Reactions: Codable {
@@ -64,6 +72,7 @@ struct Reactions: Codable {
     let dislikes: Int
 }
 
+ 
 struct Post: Identifiable, Codable {
     let id: Int
     let title: String
@@ -71,9 +80,9 @@ struct Post: Identifiable, Codable {
     let userId: Int
     let tags: [String]
     let reactions: Reactions
-    var image: String?
+    let views: Int
+    var image: String?      
 }
-
 struct PostList: Codable {
     let posts: [Post]
     let total: Int
@@ -85,7 +94,7 @@ struct CommentUser: Codable {
     let id: Int
     let username: String
     let fullName: String
-    
+
     var avatarUrl: String {
         "https://i.pravatar.cc/150?u=\(id)"
     }
@@ -139,4 +148,6 @@ struct Crypto: Codable {
 struct Hair: Codable {
     let color, type: String
 }
+
+
 

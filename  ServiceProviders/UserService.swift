@@ -1,56 +1,37 @@
 import Foundation
 
- 
-struct SimpleUser: Codable {
-    let id: Int
-    let username: String
-    let password: String?
-}
-
-private struct SimpleUserListResponse: Codable {
-    let users: [SimpleUser]
-}
-
-struct LoginRequest: Codable {
-    let username: String
-    let password: String
-}
-
-struct AuthenticatedUser: Codable {
-    let id: Int
-    let username: String
-    let email: String?
-    let firstName: String?
-    let lastName: String?
-    let gender: String?
-    let image: String?
-    let token: String?
-}
-
- 
-
- 
 struct UserService {
-    
-     private var session: URLSession {
+    private var session: URLSession {
         URLSession(configuration: .default)
     }
-    
-    func fetchAllSimpleUsers() async throws -> [SimpleUser] {
+
+    func fetchAllUsers() async throws -> [AppUser] {
         let url = URL(string: "https://dummyjson.com/users")!
         let (data, _) = try await session.data(from: url)
-        let decoded = try JSONDecoder().decode(SimpleUserListResponse.self, from: data)
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let decoded = try decoder.decode(UserList.self, from: data)
         return decoded.users
     }
 
-    func fetchUser(by id: Int) async throws -> User {
-            let url = URL(string: "https://dummyjson.com/users/\(id)")!
+    func fetchUser(by id: Int) async throws -> AppUser {
+        let url = URL(string: "https://dummyjson.com/users/\(id)")!
         let (data, _) = try await session.data(from: url)
-        return try JSONDecoder().decode(User.self, from: data)
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return try decoder.decode(AppUser.self, from: data)
     }
 
-    func login(username: String, password: String) async throws -> AuthenticatedUser {
-        guard let url = URL(string: "https://dummyjson.com/user/login") else {
+    func fetchCurrentUser() async throws -> AppUser {
+        let url = URL(string: "https://dummyjson.com/users/me")!
+        let (data, _) = try await session.data(from: url)
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return try decoder.decode(AppUser.self, from: data)
+    }
+
+    func login(username: String, password: String) async throws -> LoginResponse {
+        guard let url = URL(string: "https://dummyjson.com/auth/login") else {
             throw URLError(.badURL)
         }
 
@@ -58,7 +39,7 @@ struct UserService {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        let body = LoginRequest(username: username, password: password)
+        let body = LoginCredentials(username: username, password: password, expiresInMins: nil)
         request.httpBody = try JSONEncoder().encode(body)
 
         let (data, response) = try await session.data(for: request)
@@ -68,8 +49,9 @@ struct UserService {
             throw URLError(.badServerResponse)
         }
 
-        let authenticatedUser = try JSONDecoder().decode(AuthenticatedUser.self, from: data)
-        return authenticatedUser
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return try decoder.decode(LoginResponse.self, from: data)
     }
 }
 

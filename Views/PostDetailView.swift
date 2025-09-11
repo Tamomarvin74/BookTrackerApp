@@ -196,7 +196,7 @@ struct PostDetailView_Previews: PreviewProvider {
                 body: "His mother had always taught him not to ever think of himself as better than others. He'd tried to live by this motto. He never looked down on those who were less fortunate or who had less money than him. But the stupidity of the group of people he was talking to made him change his mind.",
                 userId: 121,
                 tags: ["tech", "future", "art"],
-                reactions: Reactions(likes: 192, dislikes: 25),
+                reactions: Reactions(likes: 192, dislikes: 25), views:  1,
                 image: "https://picsum.photos/600/400?random=1"
             )
             PostDetailView(post: mockPost)

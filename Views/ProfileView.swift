@@ -1,4 +1,4 @@
- import SwiftUI
+import SwiftUI
 import PhotosUI
 
 struct ProfileView: View {
@@ -28,7 +28,6 @@ struct ProfileView: View {
         }
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
-     
         .task {
             await viewModel.fetchUserProfile()
         }
@@ -75,16 +74,16 @@ private extension ProfileView {
     
     var userInfoSection: some View {
         VStack(spacing: 8) {
-            Text("\(viewModel.user?.firstName ?? "") \(viewModel.user?.lastName ?? "")")
+            Text("\((viewModel.user?.firstName ?? "") + " " + (viewModel.user?.lastName ?? ""))")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(.black)
             
-            Text("\(viewModel.user?.address.city ?? ""), \(viewModel.user?.address.country ?? "")")
+            Text("\((viewModel.user?.address?.city ?? "")), \((viewModel.user?.address?.country ?? ""))")
                 .font(.subheadline)
                 .foregroundColor(.gray)
             
-            Text("\(viewModel.user?.company?.title ?? "") - \(viewModel.user?.university ?? "")")
+            Text("\((viewModel.user?.company?.title ?? "") + " - " + (viewModel.user?.university ?? ""))")
                 .font(.body)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)

@@ -58,6 +58,7 @@ final class PostService {
                 userId: userId,
                 tags: [],
                 reactions: Reactions(likes: 0, dislikes: 0),
+                views:  0,
                 image: "https://picsum.photos/600/400?random=\(fallbackId)"
             )
             return fallbackPost

@@ -2,13 +2,12 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject var authManager: AuthManager
-    @State private var username = ""
+    @State private var email = ""
     @State private var password = ""
     @State private var isPasswordVisible = false
-
-    @State private var regUsername = ""
-    @State private var regPassword = ""
+    
     @State private var regEmail = ""
+    @State private var regPassword = ""
     @State private var isRegPasswordVisible = false
     @State private var registrationMessage: String?
 
@@ -19,18 +18,21 @@ struct LoginView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
 
-                 TextField("Username", text: $username)
+                 TextField("Email", text: $email)
                     .textFieldStyle(.roundedBorder)
                     .padding(.horizontal)
+                    .keyboardType(.emailAddress)
                     .autocapitalization(.none)
 
                 HStack {
                     if isPasswordVisible {
                         TextField("Password", text: $password)
+                            .textFieldStyle(.roundedBorder)
                     } else {
                         SecureField("Password", text: $password)
+                            .textFieldStyle(.roundedBorder)
                     }
-
+                    
                     Button {
                         isPasswordVisible.toggle()
                     } label: {
@@ -38,15 +40,10 @@ struct LoginView: View {
                             .foregroundColor(.gray)
                     }
                 }
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
                 .padding(.horizontal)
 
                 Button {
-                    Task {
-                        await authManager.login(username: username, password: password)
-                    }
+                    authManager.login(email: email, password: password)
                 } label: {
                     if authManager.isLoading {
                         ProgressView()
@@ -73,11 +70,6 @@ struct LoginView: View {
                     .font(.title2)
                     .fontWeight(.semibold)
 
-                TextField("Username", text: $regUsername)
-                    .textFieldStyle(.roundedBorder)
-                    .padding(.horizontal)
-                    .autocapitalization(.none)
-
                 TextField("Email", text: $regEmail)
                     .textFieldStyle(.roundedBorder)
                     .padding(.horizontal)
@@ -87,8 +79,10 @@ struct LoginView: View {
                 HStack {
                     if isRegPasswordVisible {
                         TextField("Password", text: $regPassword)
+                            .textFieldStyle(.roundedBorder)
                     } else {
                         SecureField("Password", text: $regPassword)
+                            .textFieldStyle(.roundedBorder)
                     }
 
                     Button {
@@ -98,14 +92,11 @@ struct LoginView: View {
                             .foregroundColor(.gray)
                     }
                 }
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
                 .padding(.horizontal)
 
                 Button {
-                    authManager.register(username: regUsername, email: regEmail, password: regPassword)
-                    registrationMessage = "Registration successful! Logged in as \(regUsername)"
+                    authManager.register(email: regEmail, password: regPassword)
+                    registrationMessage = "Registration successful! Logged in as \(regEmail)"
                 } label: {
                     Text("Register")
                 }

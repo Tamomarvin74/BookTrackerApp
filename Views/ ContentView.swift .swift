@@ -1,4 +1,3 @@
-//
 //  ContentView.swift
 //  BookTrackerApp
 //
@@ -11,16 +10,16 @@ struct ContentView: View {
     @StateObject var authManager = AuthManager()
     
     var body: some View {
-        if let _ = authManager.user {
-            PostListView(
-                postViewModel: PostViewModel(authManager: authManager)
-            )
-            .environmentObject(authManager)
-        } else {
-            LoginView()
+        NavigationView {
+            if let _ = authManager.user {
+                PostListView(
+                    postViewModel: PostViewModel(authManager: authManager)
+                )
                 .environmentObject(authManager)
+            } else {
+                LoginView()
+                    .environmentObject(authManager)
+            }
         }
     }
 }
-
- 

@@ -1,15 +1,36 @@
+//
+//   RegisterView.swift
+//  BookTrackerApp
+//
+//  Created by Tamo Marvin Achiri   on 10/8/25.
+//
+
+import Foundation
 import SwiftUI
 
-struct LoginView: View {
+struct RegisterView: View {
     @EnvironmentObject var authManager: AuthManager
+    @Environment(\.presentationMode) var presentationMode
+    
     @State private var email = ""
     @State private var password = ""
     @State private var isPasswordVisible = false
+    @State private var registrationMessage: String?
     
     var body: some View {
         VStack(spacing: 0) {
              HStack {
-                Text("Login")
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.purple)
+                        .font(.title2)
+                }
+                
+                Spacer()
+                
+                Text("Register")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 
@@ -29,8 +50,7 @@ struct LoginView: View {
             .padding(.top, 20)
             .padding(.bottom, 30)
             
-            // Subtitle
-            Text("Sign in if you already have an account with us or sign up if you are a new user.")
+             Text("Create a new account to get started with Waspito.")
                 .font(.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.gray)
@@ -83,37 +103,29 @@ struct LoginView: View {
                 )
             }
             .padding(.horizontal, 24)
-            .padding(.bottom, 20)
-            
-             HStack {
-                Spacer()
-                Button("Forgot Password?") {
- 
-                }
-                .foregroundColor(.purple)
-                .font(.body)
-            }
-            .padding(.horizontal, 24)
             .padding(.bottom, 30)
             
              Button {
-                authManager.login(email: email, password: password)
+                authManager.register(email: email, password: password)
+                registrationMessage = "Registration successful! Logged in as \(email)"
             } label: {
-                if authManager.isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                } else {
-                    Text("SIGN IN")
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                }
+                Text("REGISTER")
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
             }
             .frame(height: 50)
             .frame(maxWidth: .infinity)
             .background(Color.purple)
             .cornerRadius(8)
-            .disabled(authManager.isLoading)
             .padding(.horizontal, 24)
+            
+            if let registrationMessage = registrationMessage {
+                Text(registrationMessage)
+                    .foregroundColor(.green)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 10)
+                    .padding(.horizontal, 24)
+            }
             
             if let errorMessage = authManager.errorMessage {
                 Text(errorMessage)
@@ -129,12 +141,14 @@ struct LoginView: View {
                 Divider()
                     .padding(.vertical, 20)
                 
-                Text("Don't have an account?")
+                Text("Already have an account?")
                     .font(.body)
                     .foregroundColor(.gray)
                 
-                NavigationLink(destination: RegisterView().environmentObject(authManager)) {
-                    Text("SIGN UP")
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Text("SIGN IN")
                         .fontWeight(.semibold)
                         .foregroundColor(.purple)
                         .frame(height: 50)
@@ -150,9 +164,8 @@ struct LoginView: View {
         .navigationBarHidden(true)
     }
 }
-
-struct LoginView_Previews: PreviewProvider {
+struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView().environmentObject(AuthManager())
+        RegisterView().environmentObject(AuthManager())
     }
 }
